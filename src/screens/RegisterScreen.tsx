@@ -15,6 +15,13 @@ import HogentLogo from "../assets/logo.png";
 
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import {
+  createUserWithEmailAndPassword,
+  updateCurrentUser,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../config/firebase";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Naam is verplicht!"),
@@ -42,13 +49,28 @@ const RegisterScreen = () => {
         newPassword: "",
         confirmPassword: "",
       },
-      onSubmit: (values) => {},
+      onSubmit: async ({ name, email, newPassword }) => {
+        try {
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            newPassword
+          );
+
+          await updateProfile(userCredential.user, { displayName: name });
+
+          // Wachtwoord wijzigen van de gebruiker
+          // await updatePassword(userCredential.user, newPassword)
+        } catch (error) {
+          console.log(error);
+        }
+      },
       validationSchema: validationSchema,
     }
   );
 
   return (
-    <View className="gap-6 p-8 flex flex-col justify-center flex-1">
+    <View className="gap-6 p-8 flex flex-col justify-center flex-1 bg-white">
       <Image
         source={HogentLogo}
         className="mx-auto"
@@ -117,7 +139,7 @@ const RegisterScreen = () => {
           onBlur={handleBlur("confirmPassword")}
         />
       </KeyboardAvoidingView>
-      <StyledButton>
+      <StyledButton onPress={() => handleSubmit()}>
         <StyledText className="text-white uppercase font-black text-center">
           Registreren
         </StyledText>

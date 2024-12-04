@@ -4,6 +4,7 @@ import {
   Platform,
   StyleSheet,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useRef } from "react";
@@ -13,6 +14,9 @@ import * as Yup from "yup";
 import StyledButton from "../components/StyledButton";
 import HogentLogo from "../assets/logo.png";
 import StyledText from "../components/StyledText";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
+import { useNavigation } from "@react-navigation/native";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -25,6 +29,7 @@ const validationSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const passwordRef = useRef<TextInput>(null);
+  const navigation = useNavigation();
 
   const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
     {
@@ -32,15 +37,21 @@ const LoginScreen = () => {
         email: "",
         password: "",
       },
-      onSubmit: (values) => {
-        console.log(values);
+      onSubmit: async ({ email, password }) => {
+        try {
+          const user = await signInWithEmailAndPassword(auth, email, password);
+          // Navigeer nu naar CoursesScreen
+          console.log(user);
+        } catch (error) {
+          console.log(error);
+        }
       },
       validationSchema: validationSchema,
     }
   );
 
   return (
-    <View className="gap-6 p-8 flex flex-col justify-center flex-1">
+    <View className="gap-6 p-8 flex flex-col justify-center flex-1 bg-white">
       <Image
         source={HogentLogo}
         className="mx-auto"
@@ -78,6 +89,13 @@ const LoginScreen = () => {
           onBlur={handleBlur("password")}
         />
       </KeyboardAvoidingView>
+      <TouchableOpacity
+        className="ml-auto"
+        onPress={() => {
+          navigation.navigate("register");
+        }}>
+        <StyledText className="font-thin">Nog geen account?</StyledText>
+      </TouchableOpacity>
       <StyledButton onPress={() => handleSubmit()}>
         <StyledText className="text-white uppercase font-black text-center">
           Inloggen

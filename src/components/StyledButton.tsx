@@ -1,4 +1,4 @@
-import { TouchableOpacity, TouchableOpacityProps, View } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import React from "react";
 
 interface StyledButtonProps extends TouchableOpacityProps {}
