@@ -6,17 +6,30 @@ import {
   View,
 } from "react-native";
 import React, { forwardRef } from "react";
+import StyledText from "./StyledText";
 
-interface TxtInputProps extends TextInputProps {}
+interface TxtInputProps extends TextInputProps {
+  error?: boolean;
+  errorLabel?: string;
+}
 
 const TxtInput = forwardRef<TextInput, TxtInputProps>((props, ref) => {
   return (
-    <TextInput
-      {...props}
-      ref={ref}
-      style={{ fontFamily: "Montserrat" }}
-      className="border border-gray-400 px-4 py-4 rounded-md"
-    />
+    <View>
+      <TextInput
+        {...props}
+        ref={ref}
+        style={{ fontFamily: "Montserrat" }}
+        className={`border px-4 py-4 rounded-md ${
+          props.error ? "border-red-600" : "border-gray-400"
+        }`}
+      />
+      {props.errorLabel ? (
+        <StyledText className="text-red-600 text-sm mt-2">
+          {props.errorLabel}
+        </StyledText>
+      ) : null}
+    </View>
   );
 });
 

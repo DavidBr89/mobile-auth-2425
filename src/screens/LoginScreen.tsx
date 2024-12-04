@@ -16,22 +16,24 @@ import StyledText from "../components/StyledText";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
-  password: Yup.string().required(),
+  password: Yup.string().required().min(8),
 });
 
 const LoginScreen = () => {
   const passwordRef = useRef<TextInput>(null);
 
-  const { handleChange, handleBlur, handleSubmit } = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: (values) => {
-      console.log(values);
-    },
-    validationSchema: validationSchema,
-  });
+  const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
+    {
+      initialValues: {
+        email: "",
+        password: "",
+      },
+      onSubmit: (values) => {
+        console.log(values);
+      },
+      validationSchema: validationSchema,
+    }
+  );
 
   return (
     <View className="gap-6 p-8 flex flex-col justify-center flex-1">
@@ -48,6 +50,8 @@ const LoginScreen = () => {
         className="gap-6"
         behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <TxtInput
+          error={touched.email && errors.email !== undefined}
+          errorLabel={errors.email}
           placeholder="Email"
           onSubmitEditing={() => {
             passwordRef.current?.focus();
@@ -56,16 +60,18 @@ const LoginScreen = () => {
           autoCapitalize="none"
           autoComplete="email"
           onChangeText={handleChange("email")}
-          onBlur={handleBlur}
+          onBlur={handleBlur("email")}
         />
         <TxtInput
+          error={touched.password && errors.password !== undefined}
+          errorLabel={errors.password}
           ref={passwordRef}
           placeholder="Wachtwoord"
           secureTextEntry
           autoCapitalize="none"
           autoComplete="current-password"
           onChangeText={handleChange("password")}
-          onBlur={handleBlur}
+          onBlur={handleBlur("password")}
         />
       </KeyboardAvoidingView>
       <StyledButton onPress={() => handleSubmit()}>

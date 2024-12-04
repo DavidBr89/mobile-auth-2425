@@ -13,10 +13,35 @@ import TxtInput from "../components/TxtInput";
 import StyledButton from "../components/StyledButton";
 import HogentLogo from "../assets/logo.png";
 
+import * as Yup from "yup";
+import { useFormik } from "formik";
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  email: Yup.string().email().required(),
+  newPassword: Yup.string().required().min(8),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword")], "Wachtwoorden moeten overeen komen")
+    .required(),
+});
+
 const RegisterScreen = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordFirstRef = useRef<TextInput>(null);
   const passwordSecondRef = useRef<TextInput>(null);
+
+  const { handleChange, handleBlur, handleSubmit, touched, errors } = useFormik(
+    {
+      initialValues: {
+        name: "",
+        email: "",
+        newPassword: "",
+        confirmPassword: "",
+      },
+      onSubmit: (values) => {},
+      validationSchema: validationSchema,
+    }
+  );
 
   return (
     <View className="gap-6 p-8 flex flex-col justify-center flex-1">
@@ -33,14 +58,20 @@ const RegisterScreen = () => {
         className="gap-6"
         behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <TxtInput
+          error={touched.name && errors.name != null}
+          errorLabel={errors.name}
           placeholder="Naam"
           autoComplete="name"
           onSubmitEditing={() => {
             emailInputRef.current?.focus();
           }}
           returnKeyType="next"
+          onChangeText={handleChange("name")}
+          onBlur={handleBlur("name")}
         />
         <TxtInput
+          error={touched.email && errors.email !== undefined}
+          errorLabel={errors.email}
           placeholder="Email"
           autoCapitalize="none"
           autoComplete="email"
@@ -50,8 +81,12 @@ const RegisterScreen = () => {
           }}
           returnKeyType="next"
           keyboardType="email-address"
+          onChangeText={handleChange("email")}
+          onBlur={handleBlur("email")}
         />
         <TxtInput
+          error={touched.newPassword && errors.newPassword !== undefined}
+          errorLabel={errors.newPassword}
           ref={passwordFirstRef}
           placeholder="Nieuw wachtwoord"
           autoCapitalize="none"
@@ -61,13 +96,21 @@ const RegisterScreen = () => {
             passwordSecondRef.current?.focus();
           }}
           returnKeyType="next"
+          onChangeText={handleChange("newPassword")}
+          onBlur={handleBlur("newPassword")}
         />
         <TxtInput
+          error={
+            touched.confirmPassword && errors.confirmPassword !== undefined
+          }
+          errorLabel={errors.confirmPassword}
           ref={passwordSecondRef}
           placeholder="Herhaal wachtwoord"
           autoCapitalize="none"
           autoComplete="new-password"
           secureTextEntry
+          onChangeText={handleChange("confirmPassword")}
+          onBlur={handleBlur("confirmPassword")}
         />
       </KeyboardAvoidingView>
       <StyledButton>
