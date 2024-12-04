@@ -3,7 +3,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from "react-native";
@@ -15,12 +14,7 @@ import HogentLogo from "../assets/logo.png";
 
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import {
-  createUserWithEmailAndPassword,
-  updateCurrentUser,
-  updatePassword,
-  updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
 
 const validationSchema = Yup.object().shape({

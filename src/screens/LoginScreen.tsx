@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -14,9 +15,16 @@ import * as Yup from "yup";
 import StyledButton from "../components/StyledButton";
 import HogentLogo from "../assets/logo.png";
 import StyledText from "../components/StyledText";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { AuthError, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
+import { AuthStackScreenProps } from "../../hogent-app-env";
+import { FirebaseError } from "firebase/app";
+
+const firebaseErrors = {
+  "auth/invalid-credential": "Email of wachtwoord is fout!",
+  "auth/missing-password": "Wachtwoord is verplicht!",
+};
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -29,7 +37,8 @@ const validationSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const passwordRef = useRef<TextInput>(null);
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<AuthStackScreenProps<"login">["navigation"]>();
 
   const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
     {
@@ -43,6 +52,8 @@ const LoginScreen = () => {
           // Navigeer nu naar CoursesScreen
           console.log(user);
         } catch (error) {
+          Alert.alert("Er is iets fout gegaan!", firebaseErrors[error.code]);
+
           console.log(error);
         }
       },
