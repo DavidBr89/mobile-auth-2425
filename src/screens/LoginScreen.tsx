@@ -15,8 +15,12 @@ import HogentLogo from "../assets/logo.png";
 import StyledText from "../components/StyledText";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email().required(),
-  password: Yup.string().required().min(8),
+  email: Yup.string()
+    .email("Geen geldig emailadres.")
+    .required("Email is verplicht!"),
+  password: Yup.string()
+    .required("Wachtwoord is verplicht!")
+    .min(8, "Wachtwoord moet minstens uit 8 tekens bestaan."),
 });
 
 const LoginScreen = () => {

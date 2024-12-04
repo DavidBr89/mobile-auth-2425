@@ -17,12 +17,16 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required(),
-  email: Yup.string().email().required(),
-  newPassword: Yup.string().required().min(8),
+  name: Yup.string().required("Naam is verplicht!"),
+  email: Yup.string()
+    .email("Geen geldig email adres!")
+    .required("Email is verplicht!"),
+  newPassword: Yup.string()
+    .required("Wachtwoord is verplicht!")
+    .min(8, "Wachtwoord moet minstens uit 8 tekens bestaan."),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword")], "Wachtwoorden moeten overeen komen")
-    .required(),
+    .oneOf([Yup.ref("newPassword")], "Wachtwoorden komen niet overeen.")
+    .required("Wachtwoord bevestiging is verplicht."),
 });
 
 const RegisterScreen = () => {

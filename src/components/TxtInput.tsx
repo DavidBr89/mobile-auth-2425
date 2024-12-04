@@ -24,7 +24,7 @@ const TxtInput = forwardRef<TextInput, TxtInputProps>((props, ref) => {
           props.error ? "border-red-600" : "border-gray-400"
         }`}
       />
-      {props.errorLabel ? (
+      {props.errorLabel && props.error ? (
         <StyledText className="text-red-600 text-sm mt-2">
           {props.errorLabel}
         </StyledText>
