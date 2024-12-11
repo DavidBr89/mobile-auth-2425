@@ -6,6 +6,8 @@ import { db } from "../config/firebase";
 import { collection, onSnapshot, query, Unsubscribe } from "firebase/firestore";
 
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { AppTabParamsList, AppTabScreenProps } from "../../hogent-app-env";
 
 interface Docent {
   name: string;
@@ -20,6 +22,9 @@ interface Course {
 }
 
 const CoursesScreen = () => {
+  const navigation =
+    useNavigation<AppTabScreenProps<"cartStack">["navigation"]>();
+
   const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
