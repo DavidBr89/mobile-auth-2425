@@ -36,6 +36,7 @@ const AppTabNavigator = () => {
         component={CartStackNavigator}
         options={{
           headerShown: false,
+          title: "Inschrijvingen",
           tabBarIcon: ({ color, size }) => (
             <Feather name="shopping-cart" color={color} size={size} />
           ),

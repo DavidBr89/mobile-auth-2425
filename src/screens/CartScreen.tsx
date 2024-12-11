@@ -10,12 +10,16 @@ const CartScreen = () => {
         <StyledText className="font-black uppercase text-xl">
           Inschrijvingen
         </StyledText>
-        <FlatList className="bg-red-300 my-4" data={[]} renderItem={null} />
-        <StyledButton>
-          <StyledText className="text-white uppercase font-black text-center">
-            Bevestig
-          </StyledText>
-        </StyledButton>
+        <FlatList
+          className="my-4"
+          data={[]}
+          renderItem={null}
+          ListEmptyComponent={() => (
+            <StyledText className="uppercase text-center font-semibold">
+              Geen inschrijvingen gevonden.
+            </StyledText>
+          )}
+        />
       </View>
     </View>
   );
