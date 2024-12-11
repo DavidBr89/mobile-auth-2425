@@ -13,28 +13,45 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "be.hogent.les8"
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "be.hogent.les8"
     },
     "web": {
-      "bundler": "metro",
+      // "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      ["expo-font",
-      { "Montserrat": ["./assets/fonts/Montserrat.ttf"]}],
+      [
+        "expo-font",
+        {
+          "Montserrat": [
+            "./assets/fonts/Montserrat.ttf"
+          ]
+        }
+      ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "cameraPermission": "Deze app gebruikt de camera om een foto te maken."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1f4a1b7e-0e93-46cf-af82-cca6fe5b69ec"
+      }
+    }
   }
 }

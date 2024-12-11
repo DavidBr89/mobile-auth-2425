@@ -1,0 +1,24 @@
+{
+  "cli": {
+    "version": ">= 14.1.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    // Build maar nog steeds met een JavaScript Virtual machine - Nog steeds development -> fast refresh -> GEEN EXPO GO APP meer nodig
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    // Volledige build - Android APK - AAB / iOS - IPA - Op uw eigen devices -> Geen JavaScript VM
+    "preview": {
+      "distribution": "internal"
+    },
+    // Volledige build - Android APK - AAB / iOS - IPA - Distributie -> Geen JavaScript VM
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
