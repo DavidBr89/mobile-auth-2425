@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AppStackNavigator from "./AppStackNavigator";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -6,10 +6,31 @@ import ProfileScreen from "../screens/ProfileScreen";
 import { Feather } from "@expo/vector-icons";
 import CartStackNavigator from "./CartStackNavigator";
 import { AppTabParamsList } from "../../hogent-app-env";
+import { collection, onSnapshot, Unsubscribe } from "firebase/firestore";
+import { db } from "../config/firebase";
 
 const AppTab = createBottomTabNavigator<AppTabParamsList>();
 
 const AppTabNavigator = () => {
+  const [registrationsCount, setRegistrationsCount] = useState(0);
+
+  useEffect(() => {
+    let unsubscribe: Unsubscribe | undefined;
+    (async () => {
+      try {
+        const collectionRef = collection(db, "registrations");
+
+        unsubscribe = onSnapshot(collectionRef, (qs) => {
+          setRegistrationsCount(qs.size);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+
+    return unsubscribe;
+  }, []);
+
   return (
     <AppTab.Navigator
       screenOptions={{
@@ -40,6 +61,7 @@ const AppTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Feather name="shopping-cart" color={color} size={size} />
           ),
+          tabBarBadge: registrationsCount > 0 ? registrationsCount : undefined,
         }}
       />
       <AppTab.Screen
