@@ -48,13 +48,13 @@ const LoginScreen = () => {
       },
       onSubmit: async ({ email, password }) => {
         try {
-          const user = await signInWithEmailAndPassword(auth, email, password);
-          // Navigeer nu naar CoursesScreen
-          console.log(user);
+          await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
-          Alert.alert("Er is iets fout gegaan!", firebaseErrors[error.code]);
-
-          console.log(error);
+          const firebaseError = error as FirebaseError;
+          const errorMessage =
+            firebaseErrors[firebaseError.code as keyof typeof firebaseErrors] ||
+            "Er is iets fout gegaan!";
+          Alert.alert("Er is iets fout gegaan!", errorMessage);
         }
       },
       validationSchema: validationSchema,

@@ -12,7 +12,13 @@ const AppStackNavigator = () => {
         headerStyle: { backgroundColor: "black" },
         headerTintColor: "white",
       }}>
-      <AppStack.Screen name="courses" component={CoursesScreen} />
+      <AppStack.Screen
+        name="courses"
+        component={CoursesScreen}
+        options={{
+          title: "Vakken",
+        }}
+      />
     </AppStack.Navigator>
   );
 };

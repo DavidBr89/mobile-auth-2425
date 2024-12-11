@@ -1,12 +1,13 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AppStackNavigator from "./AppStackNavigator";
 import ProfileScreen from "../screens/ProfileScreen";
 
 import { Feather } from "@expo/vector-icons";
+import CartStackNavigator from "./CartStackNavigator";
+import { AppTabParamsList } from "../../hogent-app-env";
 
-const AppTab = createBottomTabNavigator();
+const AppTab = createBottomTabNavigator<AppTabParamsList>();
 
 const AppTabNavigator = () => {
   return (
@@ -27,6 +28,16 @@ const AppTabNavigator = () => {
           title: "Vakken",
           tabBarIcon: ({ color, size }) => (
             <Feather name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <AppTab.Screen
+        name="cartStack"
+        component={CartStackNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="shopping-cart" color={color} size={size} />
           ),
         }}
       />

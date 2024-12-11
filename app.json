@@ -28,8 +28,13 @@
     },
     "plugins": [
       ["expo-font",
-      { "Montserrat": ["./assets/fonts/Montserrat.ttf"]}]
-      
+      { "Montserrat": ["./assets/fonts/Montserrat.ttf"]}],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
     ]
   }
 }

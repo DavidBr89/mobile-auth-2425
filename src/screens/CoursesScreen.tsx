@@ -1,17 +1,11 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
-import { signOut } from "firebase/auth";
-import { auth, db } from "../config/firebase";
-import {
-  collection,
-  DocumentData,
-  getDocs,
-  onSnapshot,
-  query,
-  Unsubscribe,
-} from "firebase/firestore";
+import { db } from "../config/firebase";
+import { collection, onSnapshot, query, Unsubscribe } from "firebase/firestore";
+
+import { Feather } from "@expo/vector-icons";
 
 interface Docent {
   name: string;
@@ -68,23 +62,26 @@ const CoursesScreen = () => {
 
   return (
     <View className="flex-1 justify-center p-8 bg-white">
-      <StyledText>CoursesScreen</StyledText>
       <FlatList
         data={courses}
         renderItem={({ item }) => {
           return (
-            <View className="py-4 flex flex-row items-center justify-between">
+            <View className="py-4 flex flex-row items-center  justify-between">
               <View>
-                <StyledText className="font-bold text-2xl">
+                <StyledText className="font-black text-2xl">
                   {item.name}
+                </StyledText>
+                <StyledText className="text-2xl font-bold">
+                  {item.ects} SP
                 </StyledText>
                 <StyledText className="font-light text-sm">
                   {item.description}
                 </StyledText>
               </View>
-              <StyledText className="text-3xl font-black">
-                {item.ects} SP
-              </StyledText>
+
+              <StyledButton>
+                <Feather name="plus" color="white" size={18} />
+              </StyledButton>
             </View>
           );
         }}
